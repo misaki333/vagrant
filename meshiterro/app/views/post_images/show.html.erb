@@ -14,25 +14,29 @@
             <h2 class="post-title"><%= @post_image.shop_name %></h2>
             <ul class="meta-info-cells v4 float-wrapper">
               <li>
-                <i class="fa fa-user"></i>By<a href="#">
-                  <%= @post_image.user.name %></a>
+                <i class="fa fa-user"></i>
+                By<a href="#"><%= @post_image.user.name %></a>
               </li>
               <li>
                 <i class="fa fa-calendar"></i><%= @post_image.created_at.strftime('%Y/%m/%d') %>
               </li>
             <% if @post_image.favorited_by?(current_user) %>
               <li>
-                <%= link_to post_image_favorites_path(@post_image), method: :delete do %>
-                  <i class="fa fa-heart" aira-hidden="true" style="color: red;"></i>
-                  <%= @post_image.favorites.count %>いいね
-                <% end %>
+                <a href="#">
+                  <%= link_to post_image_favorites_path(@post_image), method: :delete do %>
+                    <i class="fa fa-heart" aira-hidden="true" style="color: red;"></i>
+                    <a href="#"><%= @post_image.favorites.count %>いいね</a>
+                  <% end %>
+                </a>
               </li>
             <% else %>
               <li>
-                <%= link_to post_image_favorites_path(@post_image), method: :post do %>
-                  <i class="fa fa-heart-o" aria-hidden="true"></i>
-                  <%= @post_image.favorites.count %>いいね
-                <% end %>
+                <a href="#">
+                  <%= link_to post_image_favorites_path(@post_image), method: :post do %>
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <%= @post_image.favorites.count %>いいね
+                  <% end %>
+                </a>
               </li>
             <% end %>
               <li>
@@ -60,8 +64,7 @@
                   <div class="comment-body bb">
                     <div class="comment-avatar">
                       <div class="avatar">
-                      <!-- <img src="images/sample-author1.jpg"> -->
-                        <%= image_tag('sample-author1.jpg', style: "width: 60px; height: 60px;") %>
+                        <%= attachment_image_tag post_comment.user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg" %>
                       </div>
                     </div>
                     <div class="comment-text">
@@ -80,7 +83,6 @@
           </div>
           <hr>
 
-          <!-- Add comment section -->
           <div class="section-title-wrapper style-1 v1 mt-30" id="divAddComment">
             <h3 class="section-title left">
               <span>コメント</span>
@@ -89,7 +91,7 @@
           <%= form_for [@post_image, @post_comment] do |f| %>
             <div class="row">
               <div class="col-sm-12">
-                <%= f.text_area :comment, rows:'5', class: "form-control", placeholder: "コメントをここに" %>
+                <%= f.text_field :comment, class: "form-control", placeholder: "コメントをここに" %>
               </div>
             </div>
             <%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
